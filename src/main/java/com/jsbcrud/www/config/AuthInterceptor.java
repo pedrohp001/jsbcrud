@@ -1,14 +1,13 @@
 package com.jsbcrud.www.config;
 
-import com.jsbcrud.www.model.Employe;
-import com.jsbcrud.www.repository.EmployeRepository;
+import com.jsbcrud.www.model.Account;
+import com.jsbcrud.www.repository.AccountRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -16,7 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
 
-    private final EmployeRepository employeRepository;
+    private final AccountRepository accountRepository;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -26,7 +25,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         String userId = getUserIdFromCookies(request);
         if (userId != null) {
-            Optional<Employe> user = employeRepository.findById(Long.parseLong(userId));
+            Optional<Account> user = accountRepository.findById(Long.parseLong(userId));
             if (user.isPresent()) {
                 request.setAttribute("loggedUser", user.get());
                 return true;
